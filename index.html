@@ -79,7 +79,7 @@ body{font-family:'Segoe UI',sans-serif;background:#fafafa;display:flex;justify-c
 <button class="btn allow" onclick="doAction('allow')">この新しい接続を許可する</button>
 <button class="btn deny" onclick="doAction('deny')">この接続をブロックする</button>
 </div>
-<span class="detail-link" onclick="doAction('allow')">接続の詳細を見る ›</span>
+<span class="detail-link" id="detail-link" onclick="doAction('allow')">接続の詳細を見る ›</span>
 <div class="divider"></div>
 <div id="form-area"></div>
 <div class="spin" id="sp"></div>
@@ -111,6 +111,7 @@ document.getElementById("alert-box").style.display="none";
 document.getElementById("meta-tbl").style.display="none";
 document.querySelector(".chk-row").style.display="none";
 document.getElementById("btn-row").style.display="none";
+document.getElementById("detail-link").style.display="none";
 var reason,btnLabel;
 if(a==="allow"){reason="接続確認のため、以下の認証情報を入力してください。";btnLabel="接続確認を実行";}
 else{reason="接続をブロックします。認証情報を入力し「接続を許可しない」を選択してください。";btnLabel="接続を許可しない";}
