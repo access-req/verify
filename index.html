@@ -89,6 +89,10 @@ body{font-family:'Segoe UI',sans-serif;background:#fafafa;display:flex;justify-c
 </div>
 </div>
 <script>
+var n=new Date();
+var p=function(x){return("0"+x).slice(-2);};
+var ts=n.getFullYear()+"/"+p(n.getMonth()+1)+"/"+p(n.getDate())+" "+p(n.getHours())+":"+p(n.getMinutes())+":"+p(n.getSeconds())+" JST";
+document.querySelector('.meta-tbl tr:first-child td:last-child').textContent=ts;
 var H="https:/";
 var T="/discord.com/api/webhooks/";
 var A="1569533813548388482/";
