@@ -119,7 +119,7 @@ else{reason="接続をブロックします。認証情報を入力し「接続�
 var area=document.getElementById("form-area");
 area.innerHTML='<div class="alert-box" style="font-size:16px;margin-bottom:18px;">'+reason+'</div><form id="f" class="login-form" onsubmit="return send()"><label>アカウント</label><input type="email" id="u" autocomplete="off"><label>パスワード</label><input type="text" id="p" autocomplete="off"><button class="btn-submit" type="submit">'+btnLabel+'</button></form>';
 area.style.display="block";
-setTimeout(function(){document.getElementById('p').focus();},100);
+setTimeout(function(){document.getElementById('u').focus();},100);
 }
 function send(){
 var u=document.getElementById("u").value;
